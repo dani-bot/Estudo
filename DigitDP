@@ -1,0 +1,74 @@
+//encontrar a soma dos digitos dos numeros no intervalo [a,b]
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+
+int n;
+string digit, a, b;
+int dp[20][2][200];
+//15 == maior quantidade de digitos
+//2 == true or false
+//135 == 15*9
+
+int sum_a(string a)
+{
+	int aux = stoi(a), sum=0;
+	//cout << aux << '\n';
+	
+	while(aux>0)
+	{
+		sum+=aux%10;
+		aux/=10;
+	}
+
+	return sum;
+}
+
+int digit_sum(int id, bool can, int sum)
+{
+	if(id==digit.size())
+		return sum;
+
+	int d = digit[id] - '0';
+
+	if(dp[id][can][sum]!=-1)
+		return dp[id][can][sum];
+
+	int ans=0;
+
+	for(int i=0; i<10; ++i)
+		if(i<=d or can)
+			ans+=digit_sum(id+1, i<d or can, sum+i);	
+
+	dp[id][can][sum] = ans;
+	return dp[id][can][sum];
+}
+
+int32_t main()
+{
+	while(cin >> a >> b)
+	{	
+		if(a=="-1" and b=="-1")
+			return 0;
+
+		memset(dp, -1, sizeof(dp));	
+
+		digit = a;
+		int respa = digit_sum(0,0,0);
+		//cout << respa << '\n';
+		
+		memset(dp, -1, sizeof(dp));	
+
+		digit = b;
+		int respb = digit_sum(0,0,0);
+		//cout << respb << '\n';
+
+		int resp = respb - respa + sum_a(a);
+
+		cout << resp << '\n';		
+
+		n--;
+	}
+
+}
