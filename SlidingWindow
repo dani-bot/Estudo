@@ -1,0 +1,42 @@
+//Sliding Window
+//Soma max intervalo k
+#include <bits/stdc++.h>
+using namespace std;
+
+double n, k, d[200005];
+double x,resp=0, w_sum=0;
+vector<double>ve;
+
+void check(int k)
+{
+	double maxsum=0;
+	for(int i=0; i<k; i++)
+		maxsum+=ve[i];
+
+	double wsum=maxsum;
+	for(int i=k; i<n; i++)
+	{
+		wsum+= ve[i] - ve[i-k];
+		maxsum = max(maxsum, wsum); 
+	}
+
+	resp = maxsum;
+}
+
+int32_t main()
+{
+	cin >> n >> k;
+
+	for(int i=0; i<n; i++)
+	{
+		cin >> d[i];
+
+		x = (d[i]+1)/2;
+		ve.push_back(x);
+	}
+
+	check(k);
+
+	cout << setprecision(9) << fixed;
+	cout << resp << '\n';
+}
