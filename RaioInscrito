@@ -1,0 +1,32 @@
+//Calcular raio de um circulo inscrito a um triangulo
+#include <bits/stdc++.h>
+using namespace std;
+
+const double eps = 1e-6;
+
+double a,b,c;
+
+double calcRaio(double a, double b, double c)
+{
+	double raio = (b+c-a)*(a+c-b)*(b+a-c);
+	raio /= (a+b+c);
+	if(raio >= eps) //checa se o triangulo eh valido
+	{
+		raio = sqrt(raio);
+		raio /= 2;
+	}
+	else //se nao for valido retorna raio = 0
+		raio = 0.000;
+		
+	return raio;
+}
+
+int main()
+{
+	cout << setprecision(3) << fixed;
+	while(cin >> a >> b >> c)
+	{
+		double r = calcRaio(a,b,c);
+		cout << "The radius of the round table is: " << r << '\n';
+	}
+}
