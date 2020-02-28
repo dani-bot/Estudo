@@ -1,0 +1,79 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define int long long
+#define double long double
+
+const double eps = 1e-9;
+
+int xc1,yc1,xc2,yc2,r1,r2;
+double yt1,xt1,yt2,xt2,area = 0;
+
+//distancia entre dois pontos
+double dist(int x1, int y1, int x2, int y2)
+{
+	double d = (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2);
+	return d;
+}
+
+//checar se um circulo esta dentro do outro
+bool check(int x1, int y1, int r1, int x2, int y2, int r2)
+{
+	double d = dist(x1,y1,x2,y2);
+	d = sqrt(d);
+	
+	if(d + r1 - r2 <= eps)
+		return true;
+	else if(d + r2 - r1 <= eps)
+		return true;
+		
+	return false;
+}
+
+//calc area sem precisar dos pontos de tangencia
+double calcArea(int xc1, int yc1, int xc2, int yc2, int r1, int r2)
+{
+	double c = sqrt(dist(xc1,yc1,xc2,yc2));
+	double d = (r1*r1 - r2*r2)/(2*c) + c/2;
+	
+	double co1 = d/r1;
+	double co2 = (c-d)/r2;
+
+	double ang1 = 2*acos(co1);
+	double ang2 = 2*acos(co2);
+	
+	double a1 = ang1*r1*r1/2 - sin(ang1)*r1*r1/2;
+	double a2 = ang2*r2*r2/2 - sin(ang2)*r2*r2/2;
+	double A =  a1 + a2;
+	return A;
+}
+
+int32_t main()
+{
+	cout << setprecision(12) << fixed;
+	cin >> xc1 >> yc1 >> r1 >> xc2 >> yc2 >> r2;
+	
+	if(check(xc1, yc1, r1, xc2, yc2, r2))
+	{
+		if(r1 < r2)
+		{
+			area = acos(-1)*r1*r1;
+			cout << area << '\n';
+		}
+		else
+		{
+			area = acos(-1)*r2*r2;
+			cout << area << '\n';
+		}	
+	}
+	else
+	{
+		if(sqrt(dist(xc1,yc1,xc2,yc2)) - (r1+r2) >= eps) //se n ha intersecao
+			cout << .0 << '\n';
+		else
+		{
+			area = calcArea(xc1,yc1,xc2,yc2,r1,r2);
+			cout << area << '\n';	
+		}
+	}
+}
