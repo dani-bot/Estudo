@@ -1,0 +1,18 @@
+//encontra o pai do conjunto
+int findFriend(int x)
+{
+	return F[x] = x == F[x] ? x : findFriend(F[x]);
+}
+
+//junta dois conjuntos
+void friendship(int x, int y){
+	x = findFriend(x);
+	y = findFriend(y);
+	
+	if(x == y) return;
+	
+	if(szF[x] > szF[y]) swap(x,y);
+	
+	F[x] = y;
+	szF[y] += szF[x];
+}
